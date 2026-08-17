@@ -22,7 +22,7 @@ function requireLogin() {
 
 function requireAdmin() {
     requireLogin();
-    if ($_SESSION['user_role'] !== 'admin') {
+    if (($_SESSION['user_role'] ?? '') !== 'admin') {
         setFlashMessage('error', 'You are not authorized to access this page.');
         redirect('/LeadManagement/user/dashboard.php');
         exit;
@@ -42,7 +42,7 @@ function currentUser() {
 }
 
 function isAdmin() {
-    return isLoggedIn() && $_SESSION['user_role'] === 'admin';
+    return isLoggedIn() && ($_SESSION['user_role'] ?? '') === 'admin';
 }
 
 function loginUser($email, $password) {

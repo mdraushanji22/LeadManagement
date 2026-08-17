@@ -99,38 +99,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="name" class="form-label">Full Name</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= escape($_POST['name'] ?? '') ?>" required autofocus>
+                            <input type="text" class="form-control" id="name" name="name" value="<?= escape($_POST['name'] ?? '') ?>" placeholder="Enter full name" required autofocus>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                            <input type="email" class="form-control" id="email" name="email" value="<?= escape($_POST['email'] ?? '') ?>" required>
+                            <input type="email" class="form-control" id="email" name="email" value="<?= escape($_POST['email'] ?? '') ?>" placeholder="you@example.com" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-phone"></i></span>
-                            <input type="text" class="form-control" id="phone" name="phone" value="<?= escape($_POST['phone'] ?? '') ?>">
+                            <input type="text" class="form-control" id="phone" name="phone" value="<?= escape($_POST['phone'] ?? '') ?>" placeholder="e.g. 9876543210">
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Register As</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-shield"></i></span>
-                            <select class="form-select" id="role" name="role">
-                                <option value="user" <?= ($role ?? 'user') === 'user' ? 'selected' : '' ?>>User</option>
-                                <option value="admin" <?= ($role ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
-                            </select>
-                        </div>
-                    </div>
+                    <input type="hidden" name="role" value="user">
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                            <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Min 6 characters" required minlength="6">
                         </div>
                         <small class="text-muted">Minimum 6 characters.</small>
                     </div>
@@ -138,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="confirm_password" class="form-label">Confirm Password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="6">
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required minlength="6">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">

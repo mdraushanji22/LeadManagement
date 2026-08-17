@@ -21,6 +21,7 @@ if (!$user) {
 }
 
 $errors = [];
+$isSelf = ($userId == $_SESSION['user_id']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
@@ -37,6 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($email)) $errors[] = 'Email is required.';
         if ($email && !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email address.';
         if (empty($role) || !in_array($role, ['admin', 'user'])) $errors[] = 'Valid role is required.';
+
+        if ($isSelf && $role !== 'admin') {
+            $errors[] = 'You cannot change your own role from admin.';
+        }
+        if ($isSelf && $status !== 'active') {
+            $errors[] = 'You cannot deactivate your own account.';
+        }
 
         if (empty($errors)) {
             $checkStmt = $db->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
@@ -117,17 +125,25 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                     <div class="col-md-6">
                         <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
-                        <select class="form-select" id="role" name="role" required>
+                        <select class="form-select" id="role" name="role" required <?= $isSelf ? 'disabled' : '' ?>>
                             <option value="user" <?= $user['role'] === 'user' ? 'selected' : '' ?>>User</option>
                             <option value="admin" <?= $user['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
                         </select>
+                        <?php if ($isSelf): ?>
+                        <input type="hidden" name="role" value="<?= escape($user['role']) ?>">
+                        <small class="text-muted">You cannot change your own role.</small>
+                        <?php endif; ?>
                     </div>
                     <div class="col-md-6">
                         <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status">
+                        <select class="form-select" id="status" name="status" <?= $isSelf ? 'disabled' : '' ?>>
                             <option value="active" <?= $user['status'] === 'active' ? 'selected' : '' ?>>Active</option>
                             <option value="inactive" <?= $user['status'] === 'inactive' ? 'selected' : '' ?>>Inactive</option>
                         </select>
+                        <?php if ($isSelf): ?>
+                        <input type="hidden" name="status" value="<?= escape($user['status']) ?>">
+                        <small class="text-muted">You cannot deactivate your own account.</small>
+                        <?php endif; ?>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Update User</button>

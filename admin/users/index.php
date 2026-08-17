@@ -9,6 +9,10 @@ $stmt = $db->prepare("SELECT * FROM users ORDER BY created_at DESC");
 $stmt->execute();
 $users = $stmt->fetchAll();
 
+$adminCountStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE role = 'admin' AND status = 'active'");
+$adminCountStmt->execute();
+$adminCount = $adminCountStmt->fetchColumn();
+
 require_once __DIR__ . '/../../includes/header.php';
 require_once __DIR__ . '/../../includes/sidebar.php';
 ?>
@@ -63,10 +67,11 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                 <div class="btn-group btn-group-sm">
                                     <a href="/LeadManagement/admin/users/edit.php?id=<?= $u['id'] ?>" class="btn btn-outline-warning" title="Edit"><i class="bi bi-pencil"></i></a>
                                     <?php if ($u['id'] != $_SESSION['user_id']): ?>
+                                    <?php $canDelete = !($u['role'] === 'admin' && $adminCount <= 1); ?>
                                     <form method="POST" action="/LeadManagement/admin/users/delete.php" class="delete-form d-inline" style="margin:0;">
                                         <?= csrfField() ?>
                                         <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                                        <button type="submit" class="btn btn-outline-danger" title="Delete" onclick="return confirmDelete('Are you sure you want to delete this user?')"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-outline-danger <?= $canDelete ? '' : 'disabled' ?>" title="<?= $canDelete ? 'Delete' : 'Last admin - cannot delete' ?>" <?= $canDelete ? 'onclick="return confirmDelete(\'Are you sure you want to delete this user?\')"' : 'disabled' ?>><i class="bi bi-trash"></i></button>
                                     </form>
                                     <?php endif; ?>
                                 </div>

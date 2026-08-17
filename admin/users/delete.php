@@ -21,11 +21,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('/LeadManagement/admin/users/index.php');
     }
 
-    $stmt = $db->prepare("SELECT id FROM users WHERE id = ?");
+    $stmt = $db->prepare("SELECT id, role FROM users WHERE id = ?");
     $stmt->execute([$userId]);
-    if (!$stmt->fetch()) {
+    $userToDelete = $stmt->fetch();
+    if (!$userToDelete) {
         setFlashMessage('error', 'User not found.');
         redirect('/LeadManagement/admin/users/index.php');
+    }
+
+    if ($userToDelete['role'] === 'admin') {
+        $countStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE role = 'admin' AND status = 'active'");
+        $countStmt->execute();
+        $adminCount = $countStmt->fetchColumn();
+        if ($adminCount <= 1) {
+            setFlashMessage('error', 'Cannot delete the last admin account.');
+            redirect('/LeadManagement/admin/users/index.php');
+        }
     }
 
     $stmt = $db->prepare("DELETE FROM users WHERE id = ?");

@@ -1,21 +1,21 @@
 <?php
-require_once __DIR__ . '/../includes/auth.php';
+    require_once __DIR__ . '/../includes/auth.php';
 
-if (isLoggedIn()) {
+    if (isLoggedIn()) {
     if (isAdmin()) {
         redirect('/LeadManagement/admin/dashboard.php');
     } else {
         redirect('/LeadManagement/user/dashboard.php');
     }
-}
+    }
 
-$error = '';
+    $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (! verifyCSRFToken($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid request. Please try again.';
     } else {
-        $email = trim($_POST['email'] ?? '');
+        $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
         if (empty($email) || empty($password)) {
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Invalid email or password.';
         }
     }
-}
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,35 +64,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p class="text-muted">Sign in to your account</p>
                 </div>
 
-                <?php if (!empty($error)): ?>
+                <?php if (! empty($error)): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="bi bi-exclamation-triangle me-1"></i>
-                    <?= escape($error) ?>
+                    <?php echo escape($error) ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 <?php endif; ?>
 
-                <?php $flash = getFlashMessage(); if ($flash): ?>
-                <div class="alert alert-<?= $flash['type'] === 'error' ? 'danger' : $flash['type'] ?> alert-dismissible fade show" role="alert">
-                    <?= escape($flash['message']) ?>
+                <?php $flash = getFlashMessage();if ($flash): ?>
+                <div class="alert alert-<?php echo $flash['type'] === 'error' ? 'danger' : $flash['type'] ?> alert-dismissible fade show" role="alert">
+                    <?php echo escape($flash['message']) ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 <?php endif; ?>
 
                 <form method="POST" action="">
-                    <?= csrfField() ?>
+                    <?php echo csrfField() ?>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                            <input type="email" class="form-control" id="email" name="email" value="<?= escape($_POST['email'] ?? '') ?>" required autofocus>
+                            <input type="email" class="form-control" id="email" name="email" value="<?php echo escape($_POST['email'] ?? '') ?>" placeholder="Enter Your Email" required autofocus>
                         </div>
                     </div>
                     <div class="mb-4">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">

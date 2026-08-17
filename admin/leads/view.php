@@ -189,6 +189,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <?= csrfField() ?>
                     <input type="hidden" name="action" value="add">
                     <input type="hidden" name="lead_id" value="<?= $leadId ?>">
                     <div class="mb-3">
