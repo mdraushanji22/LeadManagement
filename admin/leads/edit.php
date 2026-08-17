@@ -25,11 +25,13 @@ $usersStmt->execute();
 $usersList = $usersStmt->fetchAll();
 
 $errors = [];
+$old = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Invalid request. Please try again.';
     } else {
+        $old = $_POST;
         $customerName = trim($_POST['customer_name'] ?? '');
         $companyName = trim($_POST['company_name'] ?? '');
         $mobile = trim($_POST['mobile'] ?? '');
@@ -57,23 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($lead['priority'] !== $priority) {
                 $activities[] = ['Priority Changed', 'Priority changed from ' . $lead['priority'] . ' to ' . $priority . '.'];
             }
-            if ($lead['assigned_user_id'] != ($_POST['assigned_user_id'] ?: null)) {
-                $oldUser = $lead['assigned_user_id'] ? 'Unassigned' : 'Unknown';
-                $newUser = 'Unassigned';
-                if ($lead['assigned_user_id']) {
-                    $uStmt = $db->prepare("SELECT name FROM users WHERE id = ?");
-                    $uStmt->execute([$lead['assigned_user_id']]);
-                    $uRow = $uStmt->fetch();
-                    $oldUser = $uRow['name'] ?? 'Unknown';
-                }
-                if (!empty($_POST['assigned_user_id'])) {
-                    $uStmt = $db->prepare("SELECT name FROM users WHERE id = ?");
-                    $uStmt->execute([$_POST['assigned_user_id']]);
-                    $uRow = $uStmt->fetch();
-                    $newUser = $uRow['name'] ?? 'Unknown';
-                }
-                $activities[] = ['Lead Assigned', 'Lead reassigned from ' . $oldUser . ' to ' . $newUser . '.'];
-            }
             if ($lead['remarks'] !== $remarks && $remarks) {
                 $activities[] = ['Remark Added', 'Remarks updated.'];
             }
@@ -81,9 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $activities[] = ['Lead Updated', 'Lead information updated.'];
             }
 
-            $assignedUserId = $_POST['assigned_user_id'] ?: null;
-            $stmt = $db->prepare("UPDATE leads SET customer_name=?, company_name=?, mobile=?, email=?, lead_source=?, product_service=?, priority=?, assigned_user_id=?, lead_status=?, remarks=?, updated_at=NOW() WHERE id=?");
-            $stmt->execute([$customerName, $companyName, $mobile, $email, $leadSource, $productService, $priority, $assignedUserId, $leadStatus, $remarks, $leadId]);
+            $stmt = $db->prepare("UPDATE leads SET customer_name=?, company_name=?, mobile=?, email=?, lead_source=?, product_service=?, priority=?, lead_status=?, remarks=?, updated_at=NOW() WHERE id=?");
+            $stmt->execute([$customerName, $companyName, $mobile, $email, $leadSource, $productService, $priority, $leadStatus, $remarks, $leadId]);
 
             foreach ($activities as $act) {
                 createActivity($leadId, $_SESSION['user_id'], $act[0], $act[1]);
@@ -95,7 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$old = $old ?: $lead;
+if (empty($old)) {
+    $old = $lead;
+}
 
 require_once __DIR__ . '/../../includes/header.php';
 require_once __DIR__ . '/../../includes/sidebar.php';
@@ -129,19 +115,19 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="customer_name" class="form-label">Customer Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="customer_name" name="customer_name" value="<?= escape($old['customer_name'] ?? '') ?>" required>
+                        <input type="text" class="form-control" id="customer_name" name="customer_name" value="<?= escape($old['customer_name'] ?? '') ?>" placeholder="Enter customer name" required>
                     </div>
                     <div class="col-md-6">
                         <label for="company_name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name" value="<?= escape($old['company_name'] ?? '') ?>">
+                        <input type="text" class="form-control" id="company_name" name="company_name" value="<?= escape($old['company_name'] ?? '') ?>" placeholder="Enter company name">
                     </div>
                     <div class="col-md-6">
                         <label for="mobile" class="form-label">Mobile <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="mobile" name="mobile" value="<?= escape($old['mobile'] ?? '') ?>" required>
+                        <input type="text" class="form-control" id="mobile" name="mobile" value="<?= escape($old['mobile'] ?? '') ?>" placeholder="e.g. 9876543210" required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($old['email'] ?? '') ?>">
+                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($old['email'] ?? '') ?>" placeholder="customer@example.com">
                     </div>
                     <div class="col-md-6">
                         <label for="lead_source" class="form-label">Lead Source <span class="text-danger">*</span></label>
@@ -154,7 +140,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                     <div class="col-md-6">
                         <label for="product_service" class="form-label">Product/Service <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="product_service" name="product_service" value="<?= escape($old['product_service'] ?? '') ?>" required>
+                        <input type="text" class="form-control" id="product_service" name="product_service" value="<?= escape($old['product_service'] ?? '') ?>" placeholder="e.g. CRM Software" required>
                     </div>
                     <div class="col-md-6">
                         <label for="priority" class="form-label">Priority <span class="text-danger">*</span></label>
@@ -176,7 +162,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                     <div class="col-12">
                         <label for="remarks" class="form-label">Remarks</label>
-                        <textarea class="form-control" id="remarks" name="remarks" rows="3"><?= escape($old['remarks'] ?? '') ?></textarea>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Add any notes or remarks..."><?= escape($old['remarks'] ?? '') ?></textarea>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Update Lead</button>

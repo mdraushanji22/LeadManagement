@@ -206,7 +206,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Discussion</label>
-                        <textarea class="form-control" name="discussion" rows="3"></textarea>
+                        <textarea class="form-control" name="discussion" rows="3" placeholder="Enter discussion details..."></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Next Follow-up Date</label>

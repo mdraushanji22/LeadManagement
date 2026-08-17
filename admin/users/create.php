@@ -77,19 +77,19 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                 <div class="row g-3">
                     <div class="col-12">
                         <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?= escape($old['name'] ?? '') ?>" required>
+                        <input type="text" class="form-control" id="name" name="name" value="<?= escape($old['name'] ?? '') ?>" placeholder="Enter full name" required>
                     </div>
                     <div class="col-12">
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($old['email'] ?? '') ?>" required>
+                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($old['email'] ?? '') ?>" placeholder="user@example.com" required>
                     </div>
                     <div class="col-12">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" value="<?= escape($old['phone'] ?? '') ?>">
+                        <input type="text" class="form-control" id="phone" name="phone" value="<?= escape($old['phone'] ?? '') ?>" placeholder="e.g. 9876543210">
                     </div>
                     <div class="col-12">
                         <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Min 6 characters" required minlength="6">
                         <small class="text-muted">Minimum 6 characters.</small>
                     </div>
                     <div class="col-md-6">

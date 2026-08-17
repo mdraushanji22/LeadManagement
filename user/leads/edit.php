@@ -110,19 +110,19 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="customer_name" class="form-label">Customer Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="customer_name" name="customer_name" value="<?= escape($lead['customer_name']) ?>" required>
+                        <input type="text" class="form-control" id="customer_name" name="customer_name" value="<?= escape($lead['customer_name']) ?>" placeholder="Enter customer name" required>
                     </div>
                     <div class="col-md-6">
                         <label for="company_name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name" value="<?= escape($lead['company_name'] ?? '') ?>">
+                        <input type="text" class="form-control" id="company_name" name="company_name" value="<?= escape($lead['company_name'] ?? '') ?>" placeholder="Enter company name">
                     </div>
                     <div class="col-md-6">
                         <label for="mobile" class="form-label">Mobile <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="mobile" name="mobile" value="<?= escape($lead['mobile']) ?>" required>
+                        <input type="text" class="form-control" id="mobile" name="mobile" value="<?= escape($lead['mobile']) ?>" placeholder="e.g. 9876543210" required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($lead['email'] ?? '') ?>">
+                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($lead['email'] ?? '') ?>" placeholder="customer@example.com">
                     </div>
                     <div class="col-md-6">
                         <label for="lead_source" class="form-label">Lead Source <span class="text-danger">*</span></label>
@@ -135,7 +135,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                     <div class="col-md-6">
                         <label for="product_service" class="form-label">Product/Service <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="product_service" name="product_service" value="<?= escape($lead['product_service']) ?>" required>
+                        <input type="text" class="form-control" id="product_service" name="product_service" value="<?= escape($lead['product_service']) ?>" placeholder="e.g. CRM Software" required>
                     </div>
                     <div class="col-md-6">
                         <label for="priority" class="form-label">Priority <span class="text-danger">*</span></label>
@@ -157,7 +157,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                     <div class="col-12">
                         <label for="remarks" class="form-label">Remarks</label>
-                        <textarea class="form-control" id="remarks" name="remarks" rows="3"><?= escape($lead['remarks'] ?? '') ?></textarea>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Add any notes or remarks..."><?= escape($lead['remarks'] ?? '') ?></textarea>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Update Lead</button>

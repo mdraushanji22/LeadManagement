@@ -100,19 +100,19 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                 <div class="row g-3">
                     <div class="col-12">
                         <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?= escape($user['name']) ?>" required>
+                        <input type="text" class="form-control" id="name" name="name" value="<?= escape($user['name']) ?>" placeholder="Enter full name" required>
                     </div>
                     <div class="col-12">
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($user['email']) ?>" required>
+                        <input type="email" class="form-control" id="email" name="email" value="<?= escape($user['email']) ?>" placeholder="user@example.com" required>
                     </div>
                     <div class="col-12">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" value="<?= escape($user['phone'] ?? '') ?>">
+                        <input type="text" class="form-control" id="phone" name="phone" value="<?= escape($user['phone'] ?? '') ?>" placeholder="e.g. 9876543210">
                     </div>
                     <div class="col-12">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" minlength="6">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current" minlength="6">
                         <small class="text-muted">Leave blank to keep current password. Minimum 6 characters if changing.</small>
                     </div>
                     <div class="col-md-6">

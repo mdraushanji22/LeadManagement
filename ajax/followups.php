@@ -7,7 +7,7 @@ $userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     setFlashMessage('error', 'Invalid request method.');
-    header("Location: " . $_SERVER['HTTP_REFERER'] ?? '/');
+    header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/'));
     exit;
 }
 
@@ -17,7 +17,7 @@ $followupId = intval($_POST['followup_id'] ?? 0);
 
 if (!$leadId) {
     setFlashMessage('error', 'Invalid lead ID.');
-    header("Location: " . $_SERVER['HTTP_REFERER'] ?? '/');
+    header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/'));
     exit;
 }
 
