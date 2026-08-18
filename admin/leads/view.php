@@ -138,12 +138,14 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                             <?php if ($fu['status'] === 'Pending'): ?>
                             <div class="btn-group btn-group-sm ms-2">
                                 <form method="POST" action="/LeadManagement/ajax/followups.php" class="d-inline">
+                                    <?= csrfField() ?>
                                     <input type="hidden" name="action" value="complete">
                                     <input type="hidden" name="followup_id" value="<?= $fu['id'] ?>">
                                     <input type="hidden" name="lead_id" value="<?= $leadId ?>">
                                     <button type="submit" class="btn btn-sm btn-outline-success" title="Complete"><i class="bi bi-check"></i></button>
                                 </form>
                                 <form method="POST" action="/LeadManagement/ajax/followups.php" class="d-inline">
+                                    <?= csrfField() ?>
                                     <input type="hidden" name="action" value="cancel">
                                     <input type="hidden" name="followup_id" value="<?= $fu['id'] ?>">
                                     <input type="hidden" name="lead_id" value="<?= $leadId ?>">

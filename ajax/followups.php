@@ -64,14 +64,20 @@ if ($action === 'add') {
 
     setFlashMessage('success', 'Follow-up added successfully.');
 } elseif ($action === 'complete') {
+    if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        setFlashMessage('error', 'Invalid request.');
+        header("Location: $redirectUrl");
+        exit;
+    }
+
     if (!$followupId) {
         setFlashMessage('error', 'Invalid follow-up ID.');
         header("Location: $redirectUrl");
         exit;
     }
 
-    $stmt = $db->prepare("SELECT * FROM follow_ups WHERE id = ? AND lead_id = ?");
-    $stmt->execute([$followupId, $leadId]);
+    $stmt = $db->prepare("SELECT * FROM follow_ups WHERE id = ? AND lead_id = ? AND user_id = ?");
+    $stmt->execute([$followupId, $leadId, $userId]);
     $fu = $stmt->fetch();
 
     if (!$fu) {
@@ -87,14 +93,20 @@ if ($action === 'add') {
 
     setFlashMessage('success', 'Follow-up completed successfully.');
 } elseif ($action === 'cancel') {
+    if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        setFlashMessage('error', 'Invalid request.');
+        header("Location: $redirectUrl");
+        exit;
+    }
+
     if (!$followupId) {
         setFlashMessage('error', 'Invalid follow-up ID.');
         header("Location: $redirectUrl");
         exit;
     }
 
-    $stmt = $db->prepare("SELECT * FROM follow_ups WHERE id = ? AND lead_id = ?");
-    $stmt->execute([$followupId, $leadId]);
+    $stmt = $db->prepare("SELECT * FROM follow_ups WHERE id = ? AND lead_id = ? AND user_id = ?");
+    $stmt->execute([$followupId, $leadId, $userId]);
     $fu = $stmt->fetch();
 
     if (!$fu) {

@@ -71,7 +71,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                     <form method="POST" action="/LeadManagement/admin/users/delete.php" class="delete-form d-inline" style="margin:0;">
                                         <?= csrfField() ?>
                                         <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                                        <button type="submit" class="btn btn-outline-danger <?= $canDelete ? '' : 'disabled' ?>" title="<?= $canDelete ? 'Delete' : 'Last admin - cannot delete' ?>" <?= $canDelete ? 'onclick="return confirmDelete(\'Are you sure you want to delete this user?\')"' : 'disabled' ?>><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-outline-danger <?= $canDelete ? '' : 'disabled' ?>" title="<?= $canDelete ? 'Delete' : 'Last admin - cannot delete' ?>" <?= $canDelete ? '' : 'disabled' ?>><i class="bi bi-trash"></i></button>
                                     </form>
                                     <?php endif; ?>
                                 </div>

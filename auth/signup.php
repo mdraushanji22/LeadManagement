@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phone = trim($_POST['phone'] ?? '');
         $password = $_POST['password'] ?? '';
         $confirmPassword = $_POST['confirm_password'] ?? '';
-        $role = $_POST['role'] ?? 'user';
+        $role = 'user';
 
         if (empty($name)) {
             $error = 'Name is required.';
